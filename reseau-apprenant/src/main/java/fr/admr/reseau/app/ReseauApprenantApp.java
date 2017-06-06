@@ -1,7 +1,8 @@
-package fr.admr.reseau.ui;
+package fr.admr.reseau.app;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,9 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import fr.admr.reseau.domain.Formation;
 import fr.admr.reseau.domain.Participant;
@@ -32,6 +36,7 @@ public class ReseauApprenantApp
     {
         SpringApplication.run(ReseauApprenantApp.class, args);
     }
+    
     
     @Bean
     public CommandLineRunner loadData(ParticipantRepository participantRepository, FormationRepository formationRepository) {
