@@ -1,6 +1,7 @@
 package fr.admr.reseau.domain;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,10 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import fr.admr.reseau.repository.ParticipantRepository;
 
 @Entity
 public class Participant extends BaseEntity implements Serializable{
@@ -23,6 +28,7 @@ public class Participant extends BaseEntity implements Serializable{
 	private String nom;
 	private String prenom;
 	
+
 	@Enumerated(EnumType.STRING)
 	@Column(nullable=false,columnDefinition = "ENUM('TUTEUR', 'FORMATEUR', 'PARTICIPANT')")
 	private Statut statut;
@@ -76,5 +82,11 @@ public class Participant extends BaseEntity implements Serializable{
 	public String toString() {
 		return "Participant [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", statut=" + statut + "]";
 	}
+	
+	public Statut[] getStatuts(){
+		return Statut.values();
+	}
+	
+
 
 }

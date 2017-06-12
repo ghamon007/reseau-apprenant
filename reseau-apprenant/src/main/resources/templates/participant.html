@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Page des participants</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+	
+</script>
+</head>
+<body>
+	<h1 th:text="#{welcome}"></h1>
+	<span th:text="#{lang.change}"></span>:
+	<select id="locales">
+		<option value=""></option>
+		<option value="en" th:text="#{lang.eng}"></option>
+		<option value="fr" th:text="#{lang.fr}"></option>
+	</select>
+	<p th:text="#{welcome}"></p>
+	<p th:text="'Hello, ' + ${message} + '!'" />
+	<form action="#" th:action="@{/participant/update}"
+		th:object="${participant}" method="post">
+		<ul th:if="${#fields.hasErrors('*')}">
+			<li th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is incorrect</li>
+		</ul>
+		<p>
+			<label for="participant_nom" th:text="#{participant.name}">Nom
+				:</label> <input id="participant_nom" type="text" th:field="*{nom}" />
+		</p>
+		<p>
+			<label for="participant_prenom" th:text="#{participant.surname}">Prenom
+				:</label> <input id="participant_prenom" type="text" th:field="*{prenom}" />
+		</p>
+		<p>
+			<label for="participant_statut" th:text="#{participant.status}">Statut :</label> 
+			<select th:field="*{statut}">
+				<option th:each="statut : *{statuts}" th:value="${statut}" th:text="${statut}">statut</option>
+			</select>
+		</p>
+		<input type="hidden" name="delete" value="0" />
+		<input type="button" name="action1" th:value="#{update}"
+			onclick="javascript:document.forms[0].delete.value='0';if(confirm('Etes vous sur ?')) document.forms[0].submit();" />
+		<input type="button" name="action2" th:value="#{delete}"
+			onclick="javascript:document.forms[0].delete.value='1';document.forms[0].submit();" />
+	</form>
+</body>
+</html>

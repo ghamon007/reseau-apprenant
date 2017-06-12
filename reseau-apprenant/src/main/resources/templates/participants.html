@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Page des participants</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+	
+</script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#locales").change(function() {
+			var selectedOption = $('#locales').val();
+			if (selectedOption != '') {
+				window.location.replace('list?lang=' + selectedOption);
+			}
+		});
+	});
+</script>
+</head>
+<body>
+	<h1 th:text="#{welcome}"></h1>
+	<span th:text="#{lang.change}"></span>:
+	<select id="locales">
+		<option value=""></option>
+		<option value="en" th:text="#{lang.eng}"></option>
+		<option value="fr" th:text="#{lang.fr}"></option>
+	</select>
+	<p th:text="#{welcome}"></p>
+	<p th:text="'Hello, ' + ${name} + '!'" />
+	<table>
+		<tr th:each="participant : ${participants}">
+			<td th:text="${participant.id}">1</td>
+			<td><a th:href="@{/participant/edit(id=${participant.id})}" th:text="${participant.nom}">Nom ...</a></td>
+			<td th:text="${participant.prenom}">Prenom ...</td>
+		</tr>
+		<tr>
+			
+		</tr>
+	</table>
+</body>
+</html>

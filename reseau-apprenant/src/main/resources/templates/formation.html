@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Page des formations</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+	
+</script>
+</head>
+<body>
+	<h1 th:text="#{welcome}"></h1>
+	<span th:text="#{lang.change}"></span>:
+	<select id="locales">
+		<option value=""></option>
+		<option value="en" th:text="#{lang.eng}"></option>
+		<option value="fr" th:text="#{lang.fr}"></option>
+	</select>
+	<form action="#" th:action="@{/formation/update}" th:object="${formation}" method="post">
+		<p>
+			<label for="formation_typeFormation">Type :</label>
+			<select th:field="*{typeFormation}">
+				<option th:each="typeFormation : *{typeFormations}" th:value="${typeFormation}" th:text="${typeFormation}">Type Formation</option>
+			</select>
+		</p>
+		<p>
+			<label for="formation_dateFormation">Date formation :</label>
+			<input id="formation_dateFormation" type="date" th:field="*{dateFormation}" th:value="${#dates.format(formation.dateFormation,'yyyy-MM-dd')}"/>
+		 </p>
+		 <p>
+		 	<label for="formation_tuteur">Tuteur :</label>
+		 	<select th:field="*{tuteur}">
+				<option th:each="tuteur : ${tuteurs}" th:value="${tuteur.id}" th:text="${tuteur.nom}+' '+${tuteur.prenom}">tuteur</option>
+		 	</select>
+		 </p>
+		 <p>
+		 	<label for="formation_formateur">Formateur :</label>
+		 	<select th:field="*{formateur}">
+				<option th:each="formateur : ${formateurs}" th:value="${formateur.id}" th:text="${formateur.nom}+' '+${formateur.prenom}">formateur</option>
+		 	</select>
+		 </p>
+		 <p>
+		 	<label for="formation_participant1">Participant 1 :</label>
+		 	<select th:field="*{participant1}">
+				<option th:each="participant1 : ${participants}" th:value="${participant1.id}" th:text="${participant1.nom}+' '+${participant1.prenom}">participant1</option>
+		 	</select>
+		 </p>
+		 <p>
+		 	<label for="formation_participant2">Participant 2 :</label>
+		 	<select th:field="*{participant2}">
+				<option th:each="participant2 : ${participants}" th:value="${participant2.id}" th:text="${participant2.nom}+' '+${participant2.prenom}">participant2</option>
+		 	</select>
+		 </p>
+		 
+		 <input type="hidden" name="delete" value="0"/>
+		 
+		 <input type="button" th:value="#{update}" onclick="javascript:document.forms|0].delete.value='0';document.forms[0].submit();"/>
+		 <input type="button" th:value="#{delete}" onclick="javascript:document.forms|0].delete.value='1';document.forms[0].submit();"/> 
+	</form>
+</body>
+</html>

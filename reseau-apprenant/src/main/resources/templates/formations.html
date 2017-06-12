@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Page des formations</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+	
+</script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#locales").change(function() {
+			var selectedOption = $('#locales').val();
+			if (selectedOption != '') {
+				window.location.replace('list?lang=' + selectedOption);
+			}
+		});
+	});
+</script>
+</head>
+<body>
+	<h1 th:text="#{welcome}"></h1>
+	<span th:text="#{lang.change}"></span>:
+	<select id="locales">
+		<option value=""></option>
+		<option value="en" th:text="#{lang.eng}"></option>
+		<option value="fr" th:text="#{lang.fr}"></option>
+	</select>
+	<p th:text="#{welcome}"></p>
+	<p th:text="'Hello, ' + ${name} + '!'" />
+	<table>
+		<thead>
+			<tr>
+				<th th:text="#{id}">Row</th>
+				<th th:text="#{tuteur}">Variety</th>
+				<th th:text="#{formateur}">Variety</th>
+				<th th:text="#{participant1}">Variety</th>
+				<th th:text="#{participant2}">Variety</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="formation : ${formations}">
+				<td><a th:href="@{/formation/edit(id=${formation.id})}"
+					th:text="${formation.id}">1</a></td>
+				<td><a
+					th:href="@{/participant/edit(id=${formation.tuteur.id})}"
+					th:text="${formation.tuteur.nom}">tuteur ...</a></td>
+				<td><a
+					th:href="@{/participant/edit(id=${formation.formateur.id})}"
+					th:text="${formation.formateur.nom}">formateur ...</a></td>
+				<td><a
+					th:href="@{/participant/edit(id=${formation.participant1.id})}"
+					th:text="${formation.participant1.nom}">participant1 ...</a></td>
+				<td><a
+					th:href="@{/participant/edit(id=${formation.participant2.id})}"
+					th:text="${formation.participant2.nom}">participant2 ...</a></td>
+			</tr>
+			<tr>
+				<td><a th:href="@{/formation/new}" th:text="#{new}">Nouveau
+						...</a></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

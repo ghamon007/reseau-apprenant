@@ -11,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 public class Formation extends BaseEntity implements Serializable{
 	
@@ -29,6 +31,7 @@ public class Formation extends BaseEntity implements Serializable{
 	TypeFormation typeFormation;
 	
 	@Column
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	Date dateFormation;
 	
 	@ManyToOne
@@ -37,10 +40,10 @@ public class Formation extends BaseEntity implements Serializable{
 	@ManyToOne
 	Participant formateur;
 	
-	@ManyToOne
+	@ManyToOne(optional=true)
 	Participant participant1;
 	
-	@ManyToOne
+	@ManyToOne(optional=true)
 	Participant participant2;
 	
 	public Formation(){
@@ -117,5 +120,9 @@ public class Formation extends BaseEntity implements Serializable{
 		return "Formation [id=" + id + ", typeFormation=" + typeFormation + ", dateFormation=" + dateFormation
 				+ ", tuteur=" + tuteur.getId() + ", formateur=" + formateur.getId() + ", participant1=" + participant1.getId()
 				+ ", participant2=" + participant2.getId() + "]";
+	}
+	
+	public TypeFormation[] getTypeFormations(){
+		return TypeFormation.values();
 	}
 }
