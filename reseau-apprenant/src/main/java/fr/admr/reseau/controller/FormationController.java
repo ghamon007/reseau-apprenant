@@ -55,7 +55,7 @@ public class FormationController {
 		} else {
 			
 			if (formation.getClosed().booleanValue()){
-							
+				
 			}
 			formationRepository.save(formation);
 			String message = "Mise à  jour de l'utilisateur : "+formation.toString();

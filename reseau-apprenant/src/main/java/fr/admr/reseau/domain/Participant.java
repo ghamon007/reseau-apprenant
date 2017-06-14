@@ -28,7 +28,7 @@ public class Participant extends BaseEntity implements Serializable{
 	private String prenom;
 	
 
-	@OneToMany
+	@OneToMany(mappedBy="historiqueStatus")
 	private List<HistoriqueStatut> historiqueStatuts;
 	
 	
