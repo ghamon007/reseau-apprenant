@@ -1,6 +1,8 @@
 package fr.admr.reseau.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -9,10 +11,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import fr.admr.reseau.repository.ParticipantRepository;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Participant extends BaseEntity implements Serializable{
@@ -29,18 +28,19 @@ public class Participant extends BaseEntity implements Serializable{
 	private String prenom;
 	
 
-	@Enumerated(EnumType.STRING)
-	@Column(nullable=false,columnDefinition = "ENUM('TUTEUR', 'FORMATEUR', 'PARTICIPANT')")
-	private Statut statut;
+	@OneToMany
+	private List<HistoriqueStatut> historiqueStatuts;
+	
 	
 	public Participant(){
 		
 	}
 	
-	public Participant(String unNom, String unPrenom, Statut unStatut){
+	public Participant(String unNom, String unPrenom){
 		this.nom = unNom;
 		this.prenom = unPrenom;
-		this.statut = unStatut;
+		this.historiqueStatuts = new ArrayList<>();
+		historiqueStatuts.add(new HistoriqueStatut(this,Statut.PARTICIPANT,true));
 	}
 
 
@@ -60,14 +60,6 @@ public class Participant extends BaseEntity implements Serializable{
 		this.prenom = prenom;
 	}
 
-	public Statut getStatut() {
-		return statut;
-	}
-
-	public void setStatut(Statut aStatut) {
-		this.statut = aStatut;
-	}
-
 
 	public Long getId() {
 		return id;
@@ -80,13 +72,10 @@ public class Participant extends BaseEntity implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Participant [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", statut=" + statut + "]";
+		return "Participant [id=" + id + ", nom=" + nom + ", prenom=" + prenom  + "]";
 	}
 	
-	public Statut[] getStatuts(){
-		return Statut.values();
-	}
-	
+
 
 
 }

@@ -34,10 +34,11 @@
 		<p>
 			<label for="participant_statut" th:text="#{participant.status}">Statut :</label> 
 			<select th:field="*{statut}">
-				<option th:each="statut : *{statuts}" th:value="${statut}" th:text="${statut}">statut</option>
+				<option th:each="statut : ${statuts}" th:value="${statut}" th:text="${statut}">statut</option>
 			</select>
 		</p>
 		<input type="hidden" name="delete" value="0" />
+		<input type="hidden" name="id" th:value="*{id}" />
 		<input type="button" name="action1" th:value="#{update}"
 			onclick="javascript:document.forms[0].delete.value='0';if(confirm('Etes vous sur ?')) document.forms[0].submit();" />
 		<input type="button" name="action2" th:value="#{delete}"

@@ -20,7 +20,7 @@
 		<p>
 			<label for="formation_typeFormation">Type :</label>
 			<select th:field="*{typeFormation}">
-				<option th:each="typeFormation : *{typeFormations}" th:value="${typeFormation}" th:text="${typeFormation}">Type Formation</option>
+				<option th:each="typeFormation : ${typeFormations}" th:value="${typeFormation}" th:text="${typeFormation}">Type Formation</option>
 			</select>
 		</p>
 		<p>
@@ -51,11 +51,16 @@
 				<option th:each="participant2 : ${participants}" th:value="${participant2.id}" th:text="${participant2.nom}+' '+${participant2.prenom}">participant2</option>
 		 	</select>
 		 </p>
+		 <p>
+		 	<label>Réalisée :</label>
+		 	<input type="checkbox" th:field="*{closed}"/>
+		 </p>
+		 <input type="hidden" name="action" value="0"/>
+		 <input type="hidden" name="id" th:value="*{id}"/>
 		 
-		 <input type="hidden" name="delete" value="0"/>
-		 
-		 <input type="button" th:value="#{update}" onclick="javascript:document.forms|0].delete.value='0';document.forms[0].submit();"/>
-		 <input type="button" th:value="#{delete}" onclick="javascript:document.forms|0].delete.value='1';document.forms[0].submit();"/> 
+		 <input type="button" th:value="#{update}" onclick="javascript:document.forms[0].action.value='0';document.forms[0].submit();"/>
+		 <input type="button" th:value="#{delete}" onclick="javascript:document.forms[0].action.value='1';document.forms[0].submit();"/> 
+		 <input type="button" th:value="#{delete}" onclick="javascript:document.forms[0].action.value='2';document.forms[0].submit();"/> 
 	</form>
 </body>
 </html>

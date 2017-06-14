@@ -2,7 +2,6 @@ package fr.admr.reseau.app;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,13 +12,9 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
-import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import fr.admr.reseau.domain.Formation;
 import fr.admr.reseau.domain.Participant;
-import fr.admr.reseau.domain.Statut;
 import fr.admr.reseau.domain.TypeFormation;
 import fr.admr.reseau.repository.FormationRepository;
 import fr.admr.reseau.repository.ParticipantRepository;
@@ -42,15 +37,15 @@ public class ReseauApprenantApp
     public CommandLineRunner loadData(ParticipantRepository participantRepository, FormationRepository formationRepository) {
         return args -> {
         	// save a couple of Participants
-        	Participant tuteur = new Participant("Jack", "Bauer",Statut.TUTEUR);
+        	Participant tuteur = new Participant("Jack", "Bauer");
 			participantRepository.save(tuteur);
-			Participant formateur = new Participant("Chloe", "O'Brian",Statut.FORMATEUR);
+			Participant formateur = new Participant("Chloe", "O'Brian");
 			participantRepository.save(formateur);
-			Participant participant1 = new Participant("Kim", "Bauer",Statut.PARTICIPANT);
+			Participant participant1 = new Participant("Kim", "Bauer");
 			participantRepository.save(participant1);
-			Participant participant2 = new Participant("David", "Palmer",Statut.PARTICIPANT);
+			Participant participant2 = new Participant("David", "Palmer");
 			participantRepository.save(participant2);
-			Participant formateur2 = new Participant("Michelle", "Dessler", Statut.FORMATEUR);
+			Participant formateur2 = new Participant("Michelle", "Dessler");
 			participantRepository.save(formateur2);
 
 			// save formation

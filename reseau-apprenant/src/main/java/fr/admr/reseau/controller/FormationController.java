@@ -1,6 +1,5 @@
 package fr.admr.reseau.controller;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,42 +37,35 @@ public class FormationController {
 	@RequestMapping("/formation/edit")
     public String formations(@RequestParam(value="id", required=false) Long id, Model model) {
         model.addAttribute("id", id);
-        model.addAttribute("formation", formationRepository.getOne(id));
+        model.addAttribute("formation", formationRepository.findOne(id));
         model.addAttribute("tuteurs", getTuteurs());
         model.addAttribute("formateurs", getFormateurs());
         model.addAttribute("participants", getParticipants());
+        model.addAttribute("typeFormations", getTypeFormations());
         return "formation";
     }
 
 	@RequestMapping("/formation/update")
-    public String updateFormation(@RequestParam(value="formation_id", required=true) Long id,
-    		@RequestParam(value="formation_nom", required=true) String nom, 
-    		@RequestParam(value="formation_prenom", required=false) String prenom,
+    public String updateFormation(@RequestParam(value="action", required=true) String action,Formation formation,
     		Model model) {
-		Formation formation = formationRepository.findOne(id);
-        formationRepository.save(formation);
-        model.addAttribute("message", "Mise à  jour de l'utilisateur : "+id);
-        return "formation";
+		System.out.println("ID formation à bouger "+formation.getId());
+		if ("1".equals(action)){
+			model.addAttribute("message", "Mise à  jour de l'utilisateur : "+formation.getId());
+			formationRepository.delete(formation);
+		} else {
+			
+			if (formation.getClosed().booleanValue()){
+							
+			}
+			formationRepository.save(formation);
+			String message = "Mise à  jour de l'utilisateur : "+formation.toString();
+			System.out.println(message);
+			model.addAttribute("message", "Mise à  jour de l'utilisateur : "+message);
+		}
+		model.addAttribute("formations", formationRepository.findAll());
+        return "formations";
     }
 
-	@RequestMapping("/formation/delete")
-    public String deleteFormation(@RequestParam(value="id", required=true) Long id, Model model) {
-        model.addAttribute("id", id);
-        formationRepository.delete(id);
-        model.addAttribute("message", "Suppression de l'utilisateur : "+id);
-        return "formation";
-    }
-
-	
-	@RequestMapping("/formation/new")
-    public String newFormation(@RequestParam(value="formation_id", required=false) Long id, 
-    		@RequestParam(value="formation_typeFormation", required=false) TypeFormation typeFormation,
-    		@RequestParam(value="formation_dateFormation", required=false) Date dateFormation,
-    		Model model) {
-        model.addAttribute("formation", new Formation());
-        model.addAttribute("message", "Suppression de l'utilisateur : "+id);
-        return "formation";
-    }
 	
 	public List<Participant> getTuteurs(){
 		return participantRepository.findByStatut(Statut.TUTEUR);
@@ -86,5 +78,10 @@ public class FormationController {
 	public List<Participant> getParticipants(){
 		return participantRepository.findByStatut(Statut.PARTICIPANT);
 	}
+	
+	public TypeFormation[] getTypeFormations(){
+		return TypeFormation.values();
+	}
+
 
 }

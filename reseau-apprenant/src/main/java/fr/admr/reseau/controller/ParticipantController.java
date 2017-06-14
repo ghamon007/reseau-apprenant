@@ -27,7 +27,8 @@ public class ParticipantController {
 	@RequestMapping("/participant/edit")
     public String participants(@RequestParam(value="id", required=false) Long id, Model model) {
         model.addAttribute("id", id);
-        model.addAttribute("participant", participantRepository.getOne(id));
+        model.addAttribute("participant", participantRepository.findOne(id));
+        model.addAttribute("statuts", getStatuts());
         return "participant";
     }
 
@@ -46,4 +47,8 @@ public class ParticipantController {
     }
 
 
+	public Statut[] getStatuts(){
+		return Statut.values();
+	}
+	
 }
