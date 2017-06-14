@@ -1,5 +1,7 @@
 package fr.admr.reseau.app;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -14,10 +16,15 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import fr.admr.reseau.domain.Formation;
+import fr.admr.reseau.domain.HistoriqueStatut;
 import fr.admr.reseau.domain.Participant;
+import fr.admr.reseau.domain.Statut;
 import fr.admr.reseau.domain.TypeFormation;
 import fr.admr.reseau.repository.FormationRepository;
+import fr.admr.reseau.repository.HistoriqueStatutRepository;
 import fr.admr.reseau.repository.ParticipantRepository;
+import fr.admr.reseau.service.ParticipantService;
+import fr.admr.reseau.service.ParticipantServiceImpl;
 
 @ComponentScan(basePackages = "fr.admr.reseau")
 @EntityScan("fr.admr.reseau.domain")
@@ -34,48 +41,27 @@ public class ReseauApprenantApp
     
     
     @Bean
-    public CommandLineRunner loadData(ParticipantRepository participantRepository, FormationRepository formationRepository) {
+    public CommandLineRunner loadData(ParticipantService participantService, FormationRepository formationRepository, HistoriqueStatutRepository historiqueStatutRepository) {
         return args -> {
+        	
+        	
+        	
         	// save a couple of Participants
         	Participant tuteur = new Participant("Jack", "Bauer");
-			participantRepository.save(tuteur);
+			participantService.addParticipant(tuteur, Statut.TUTEUR);
 			Participant formateur = new Participant("Chloe", "O'Brian");
-			participantRepository.save(formateur);
+			participantService.addParticipant(formateur, Statut.FORMATEUR);
 			Participant participant1 = new Participant("Kim", "Bauer");
-			participantRepository.save(participant1);
+			participantService.addParticipant(participant1, Statut.PARTICIPANT);
 			Participant participant2 = new Participant("David", "Palmer");
-			participantRepository.save(participant2);
+			participantService.addParticipant(participant2, Statut.PARTICIPANT);
 			Participant formateur2 = new Participant("Michelle", "Dessler");
-			participantRepository.save(formateur2);
+			participantService.addParticipant(formateur2, Statut.FORMATEUR);
 
 			// save formation
 			
 			Date dateFormation1 = new SimpleDateFormat("dd/MM/yyyy").parse("25/03/2017");
 			formationRepository.save(new Formation(dateFormation1,TypeFormation.TRANSMISSION_REFERENTIEL,tuteur,formateur,participant1,participant2));
-			
-			
-			// fetch all Participants
-			log.info("Participants found with findAll():");
-			log.info("-------------------------------");
-			for (Participant participant : participantRepository.findAll()) {
-				log.info(participant.toString());
-			}
-			log.info("");
-
-			// fetch an individual Participant by ID
-			Participant participant = participantRepository.findOne(1L);
-			log.info("Participant found with findOne(1L):");
-			log.info("--------------------------------");
-			log.info(participant.toString());
-			log.info("");
-
-			// fetch Participants by last name
-			log.info("Participant found with findByLastNameStartsWithIgnoreCase('Bauer'):");
-			log.info("--------------------------------------------");
-			for (Participant bauer : participantRepository
-					.findByNomStartsWithIgnoreCase("Bauer")) {
-				log.info(bauer.toString());
-			}
 			
 			// fetch Formations by Date and Type
 			log.info("Formation found with findByDateFormationAndTypeFormationEquals(Date):");

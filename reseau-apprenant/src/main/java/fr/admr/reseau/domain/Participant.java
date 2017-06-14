@@ -2,13 +2,10 @@ package fr.admr.reseau.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -27,20 +24,20 @@ public class Participant extends BaseEntity implements Serializable{
 	private String nom;
 	private String prenom;
 	
+	private Statut statutCourant;
 
-	@OneToMany(mappedBy="historiqueStatus")
-	private List<HistoriqueStatut> historiqueStatuts;
+	@OneToMany(mappedBy="participant", cascade = CascadeType.ALL, orphanRemoval=false)
+	private List<HistoriqueStatut> historiqueStatuts = null;
 	
 	
 	public Participant(){
-		
+		this.historiqueStatuts = new ArrayList<HistoriqueStatut>();
 	}
 	
 	public Participant(String unNom, String unPrenom){
 		this.nom = unNom;
 		this.prenom = unPrenom;
-		this.historiqueStatuts = new ArrayList<>();
-		historiqueStatuts.add(new HistoriqueStatut(this,Statut.PARTICIPANT,true));
+		this.historiqueStatuts = new ArrayList<HistoriqueStatut>();
 	}
 
 
@@ -74,6 +71,23 @@ public class Participant extends BaseEntity implements Serializable{
 	public String toString() {
 		return "Participant [id=" + id + ", nom=" + nom + ", prenom=" + prenom  + "]";
 	}
+
+	public List<HistoriqueStatut> getHistoriqueStatuts() {
+		return historiqueStatuts;
+	}
+
+	public void setHistoriqueStatuts(List<HistoriqueStatut> historiqueStatuts) {
+		this.historiqueStatuts = historiqueStatuts;
+	}
+
+	public Statut getStatutCourant() {
+		return statutCourant;
+	}
+
+	public void setStatutCourant(Statut statutCourant) {
+		this.statutCourant = statutCourant;
+	}
+
 	
 
 

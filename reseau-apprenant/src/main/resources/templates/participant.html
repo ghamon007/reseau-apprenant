@@ -33,7 +33,7 @@
 		</p>
 		<p>
 			<label for="participant_statut" th:text="#{participant.status}">Statut :</label> 
-			<select th:field="*{statut}">
+			<select th:field="*{statutCourant}">
 				<option th:each="statut : ${statuts}" th:value="${statut}" th:text="${statut}">statut</option>
 			</select>
 		</p>

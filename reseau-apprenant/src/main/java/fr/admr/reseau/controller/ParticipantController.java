@@ -6,9 +6,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import fr.admr.reseau.domain.HistoriqueStatut;
 import fr.admr.reseau.domain.Participant;
 import fr.admr.reseau.domain.Statut;
 import fr.admr.reseau.repository.ParticipantRepository;
+import fr.admr.reseau.service.ParticipantService;
 
 @Controller
 public class ParticipantController {
@@ -16,6 +18,9 @@ public class ParticipantController {
 
 	@Autowired
 	ParticipantRepository participantRepository;
+	
+	@Autowired
+	ParticipantService participantService;
 	
 	@RequestMapping("/participant/list")
     public String listeParticipant(@RequestParam(value="name", required=false, defaultValue="World") String name, Model model) {
@@ -26,6 +31,13 @@ public class ParticipantController {
 	
 	@RequestMapping("/participant/edit")
     public String participants(@RequestParam(value="id", required=false) Long id, Model model) {
+		Participant participant = participantRepository.findOne(id);
+		for (HistoriqueStatut historiqueStatut : participant.getHistoriqueStatuts()) {
+			if (historiqueStatut.isStatutCourant()){
+				participant.setStatutCourant(historiqueStatut.getStatut());
+			}
+		}
+		
         model.addAttribute("id", id);
         model.addAttribute("participant", participantRepository.findOne(id));
         model.addAttribute("statuts", getStatuts());
@@ -38,7 +50,7 @@ public class ParticipantController {
 		if ("1".equals(delete)){
 			participantRepository.delete(participant);
 		} else {
-			participantRepository.save(participant);
+			participantService.updateParticipant(participant, participant.getStatutCourant());
 			model.addAttribute("message", "Mise à  jour de l'utilisateur : "+participant.getId());
 		}
         

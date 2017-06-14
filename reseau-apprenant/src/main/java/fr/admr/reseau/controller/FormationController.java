@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import fr.admr.reseau.domain.Formation;
+import fr.admr.reseau.domain.HistoriqueStatut;
 import fr.admr.reseau.domain.Participant;
 import fr.admr.reseau.domain.Statut;
 import fr.admr.reseau.domain.TypeFormation;
@@ -67,16 +68,16 @@ public class FormationController {
     }
 
 	
-	public List<Participant> getTuteurs(){
-		return participantRepository.findByStatut(Statut.TUTEUR);
+	public Iterable<Participant> getTuteurs(){
+		return participantRepository.findAll();
 	}
 
-	public List<Participant> getFormateurs(){
-		return participantRepository.findByStatut(Statut.FORMATEUR);
+	public Iterable<Participant> getFormateurs(){
+		return participantRepository.findAll();
 	}
 	
-	public List<Participant> getParticipants(){
-		return participantRepository.findByStatut(Statut.PARTICIPANT);
+	public Iterable<Participant> getParticipants(){
+		return participantRepository.findAll();
 	}
 	
 	public TypeFormation[] getTypeFormations(){

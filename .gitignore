@@ -1,1 +1,2 @@
-/reseau-apprenant/
+*.class
+**/target/**
