@@ -40,9 +40,9 @@
 		<input type="hidden" name="delete" value="0" />
 		<input type="hidden" name="id" th:value="*{id}" />
 		<input type="button" name="action1" th:value="#{update}"
-			onclick="javascript:document.forms[0].delete.value='0';if(confirm('Etes vous sur ?')) document.forms[0].submit();" />
+			onclick="javascript:document.forms[0].delete.value='0';document.forms[0].submit();" />
 		<input type="button" name="action2" th:value="#{delete}"
-			onclick="javascript:document.forms[0].delete.value='1';document.forms[0].submit();" />
+			onclick="javascript:document.forms[0].delete.value='1';if(confirm('Etes vous sur ?')) document.forms[0].submit();" />
 	</form>
 </body>
 </html>

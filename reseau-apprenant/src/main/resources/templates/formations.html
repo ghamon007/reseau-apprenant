@@ -19,6 +19,8 @@
 </script>
 </head>
 <body>
+	<div th:replace="fragments/header :: header">
+	</div>
 	<h1 th:text="#{welcome}"></h1>
 	<span th:text="#{lang.change}"></span>:
 	<select id="locales">
