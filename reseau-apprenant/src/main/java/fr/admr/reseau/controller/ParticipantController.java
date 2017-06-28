@@ -1,5 +1,8 @@
 package fr.admr.reseau.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,14 +26,14 @@ public class ParticipantController {
 	ParticipantService participantService;
 	
 	@RequestMapping("/participant/list")
-    public String listeParticipant(@RequestParam(value="name", required=false, defaultValue="World") String name, Model model) {
+    public String getListeParticipants(@RequestParam(value="name", required=false, defaultValue="World") String name, Model model) {
         model.addAttribute("name", name);
         model.addAttribute("participants", participantRepository.findAll());
         return "participants";
     }
 	
 	@RequestMapping("/participant/edit")
-    public String participants(@RequestParam(value="id", required=false) Long id, Model model) {
+    public String getParticipant(@RequestParam(value="id", required=false) Long id, Model model) {
 		Participant participant = participantRepository.findOne(id);
 		for (HistoriqueStatut historiqueStatut : participant.getHistoriqueStatuts()) {
 			if (historiqueStatut.isStatutCourant()){
@@ -43,7 +46,13 @@ public class ParticipantController {
         model.addAttribute("statuts", getStatuts());
         return "participant";
     }
-
+	@RequestMapping("/participant/new")
+    public String newParticipant(Model model) {
+        model.addAttribute("participant", new Participant());
+        model.addAttribute("statuts", getStatuts());
+        return "participant";
+    }
+	
 	@RequestMapping("/participant/update")
     public String updateParticipant(@RequestParam("delete") String delete,final Participant participant,
     		Model model) {
@@ -59,8 +68,13 @@ public class ParticipantController {
     }
 
 
-	public Statut[] getStatuts(){
-		return Statut.values();
+	public List<String> getStatuts(){
+		List<String> result = new ArrayList<String>();
+		result.add("");
+		for (Statut aStatut : Statut.values()) {
+			result.add(aStatut.toString());
+		}
+		return result;
 	}
 	
 }

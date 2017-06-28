@@ -1,15 +1,17 @@
 package fr.admr.reseau.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.thymeleaf.expression.Lists;
 
 import fr.admr.reseau.domain.Formation;
-import fr.admr.reseau.domain.HistoriqueStatut;
 import fr.admr.reseau.domain.Participant;
 import fr.admr.reseau.domain.Statut;
 import fr.admr.reseau.domain.TypeFormation;
@@ -29,14 +31,14 @@ public class FormationController {
 		
 	
 	@RequestMapping("/formation/list")
-    public String listeformation(@RequestParam(value="name", required=false, defaultValue="World") String name, Model model) {
+    public String getListeFormations(@RequestParam(value="name", required=false, defaultValue="World") String name, Model model) {
         model.addAttribute("name", name);
         model.addAttribute("formations", formationRepository.findAll());
         return "formations";
     }
 	
 	@RequestMapping("/formation/edit")
-    public String formations(@RequestParam(value="id", required=false) Long id, Model model) {
+    public String getFormation(@RequestParam(value="id", required=false) Long id, Model model) {
         model.addAttribute("id", id);
         model.addAttribute("formation", formationRepository.findOne(id));
         model.addAttribute("tuteurs", getTuteurs());
@@ -46,6 +48,17 @@ public class FormationController {
         return "formation";
     }
 
+	
+	@RequestMapping("/formation/new")
+    public String newFormation(Model model) {
+        model.addAttribute("formation", new Formation());
+        model.addAttribute("tuteurs", getTuteurs());
+        model.addAttribute("formateurs", getFormateurs());
+        model.addAttribute("participants", getParticipants());
+        model.addAttribute("typeFormations", getTypeFormations());
+        return "formation";
+    }
+	
 	@RequestMapping("/formation/update")
     public String updateFormation(@RequestParam(value="action", required=true) String action,Formation formation,
     		Model model) {
@@ -69,15 +82,30 @@ public class FormationController {
 
 	
 	public Iterable<Participant> getTuteurs(){
-		return participantRepository.findAll();
+		List<Participant> result = new ArrayList<>();
+		result.add(new Participant("",""));
+		for (Participant participant : participantRepository.findByStatutCourant(Statut.TUTEUR)) {
+			result.add(participant);
+		}
+		return result;
 	}
 
 	public Iterable<Participant> getFormateurs(){
-		return participantRepository.findAll();
+		List<Participant> result = new ArrayList<>();
+		result.add(new Participant("",""));
+		for (Participant participant : participantRepository.findByStatutCourant(Statut.FORMATEUR)) {
+			result.add(participant);
+		}
+		return result;
 	}
 	
-	public Iterable<Participant> getParticipants(){
-		return participantRepository.findAll();
+	public List<Participant> getParticipants(){
+		List<Participant> result = new ArrayList<>();
+		result.add(new Participant("",""));
+		for (Participant participant : participantRepository.findByStatutCourant(Statut.PARTICIPANT)) {
+			result.add(participant);
+		}
+		return result;
 	}
 	
 	public TypeFormation[] getTypeFormations(){

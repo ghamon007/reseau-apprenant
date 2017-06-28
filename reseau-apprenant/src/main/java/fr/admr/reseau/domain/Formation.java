@@ -50,7 +50,7 @@ public class Formation extends BaseEntity implements Serializable{
 	private Boolean closed;
 	
 	public Formation(){
-		
+		this.dateFormation = new Date();
 	}
 	
 	public Formation(Date dateFormation, TypeFormation typeFormation, Participant tuteur, Participant formateur, Participant participant1, Participant participant2){
